@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deffer Tech | Catálogo (Excel en vivo)</title>
+  <meta name="description" content="Catálogo de seguridad cargado directamente desde un Excel. Reemplazá el Excel para actualizar precios." />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Librería para leer XLSX en el navegador (SheetJS) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container row">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div>Deffer Tech</div>
+          <div class="meta">Catálogo por categorías · datos leídos desde <b>catalogo.xlsx</b></div>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="row">
+        <div class="badge" id="productsCount">Cargando…</div>
+        <button class="btn" id="btnOpenCart" type="button">🛒 Carrito (<span id="cartCount">0</span>)</button>
+        <a class="btn primary" id="btnWhatsappTop" href="#" target="_blank" rel="noopener">💬 WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <h1>Catálogo por <span style="color:var(--accent2)">categoría</span></h1>
+        <p>
+          Esta versión toma los datos directamente del Excel <b>catalogo.xlsx</b>.
+          Para actualizar precios, reemplazá ese archivo y recargá la página.
+        </p>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="val" id="kpiCategories">0</div>
+            <div class="lbl">Categorías</div>
+          </div>
+          <div class="kpi">
+            <div class="val" id="kpiVisible">0</div>
+            <div class="lbl">Mostrados (según filtros)</div>
+          </div>
+          <div class="kpi">
+            <div class="val" id="kpiTotal">0</div>
+            <div class="lbl">Productos totales</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="catalog">
+      <div class="row">
+        <div class="field" style="flex:1; min-width:260px;">
+          <label for="q">Buscar</label>
+          <input id="q" type="search" placeholder="Buscar por código o descripción…" />
+          <div class="small">Ej: “xvr”, “wifi”, “portero”, “energizador”, “ipc”, “dvr”.</div>
+        </div>
+
+        <div class="field">
+          <label for="category">Categoría</label>
+          <select id="category"></select>
+        </div>
+
+        <div class="field">
+          <label for="sort">Ordenar</label>
+          <select id="sort">
+            <option value="excel" selected>Orden del Excel</option>
+            <option value="relevance">Relevancia (según búsqueda)</option>
+            <option value="priceAsc">Precio (menor a mayor)</option>
+            <option value="priceDesc">Precio (mayor a menor)</option>
+            <option value="codeAsc">Código A → Z</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn" id="btnClear" type="button">Limpiar filtros</button>
+        </div>
+      </div>
+      <div class="notice" id="runtimeNote" style="margin-top:12px; display:none;"></div>
+    </section>
+
+    <section id="grid" aria-live="polite">
+      <div class="small" id="loadingMsg">Cargando catálogo desde el Excel…</div>
+    </section>
+
+    <section class="footer">
+      <div class="small">
+        <b>Importante:</b> Para que el navegador pueda leer <code>catalogo.xlsx</code>, abrí esta web desde un <b>hosting</b> o un servidor local
+        (no con doble click “file://”). En el ZIP te dejo cómo hacerlo.
+      </div>
+    </section>
+  </main>
+
+  <!-- CART MODAL -->
+  <div class="modal-backdrop" id="cartBackdrop" role="dialog" aria-modal="true" aria-label="Carrito">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">🛒 Carrito</div>
+        <div class="spacer"></div>
+        <button class="btn" id="btnCloseCart" type="button">Cerrar</button>
+      </div>
+
+      <div class="cart-items" id="cartItems"></div>
+
+      <div class="totalbar">
+        <div class="spacer"></div>
+        <div class="sum" id="cartTotal">$0</div>
+        <a class="btn primary" id="btnWhatsappCart" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
+      </div>
+
+      <div class="notice">
+        Los precios salen del Excel. Reemplazá <b>catalogo.xlsx</b> para actualizar.
+      </div>
+    </div>
+  </div>
+</body>
+</html>
