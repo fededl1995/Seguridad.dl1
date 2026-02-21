@@ -34,6 +34,16 @@ a{color:inherit}
   border-bottom:1px solid var(--border);
 }
 
+/* topbar actions: keep the 3 items aligned */
+.topbar .container.row > .row{
+  flex-wrap: nowrap;
+}
+.badge, .btn{ white-space: nowrap; }
+@media (max-width: 520px){
+  .topbar .container.row > .row{ flex-wrap: wrap; }
+}
+
+
 .brand{
   display:flex; align-items:center; gap:12px;
   font-weight:800; letter-spacing:.2px;
